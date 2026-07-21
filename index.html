@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#17375e">
-<title>值日生小幫手 V2.1.2</title>
+<title>值日生小幫手 V2.1.3</title>
 <link rel="manifest" href="manifest.webmanifest">
 <style>
 :root{--bg:#f4f6f8;--card:#fff;--ink:#16202b;--muted:#697586;--accent:#17375e;--line:#dfe5ec;--ok:#237a57;--warn:#a86100;--danger:#b42318;--soft:#eef3f8}
@@ -31,7 +31,7 @@ nav button{border:0;background:#fff;padding:10px 2px;font-size:11px;color:var(--
 </style>
 </head>
 <body>
-<header><h1>值日生小幫手 V2.1.2</h1><div class="sub">週值日｜名冊連動｜詳細 LINE 回報｜協調會彈性時間</div></header>
+<header><h1>值日生小幫手 V2.1.3</h1><div class="sub">週值日｜名冊連動｜詳細 LINE 回報｜協調會彈性時間</div></header>
 <main>
 <section id="today" class="page active">
   <div class="card"><h2>今日勤務</h2><div id="dutyInfo" class="status"></div><div class="progress"><i id="bar"></i></div></div>
@@ -134,11 +134,14 @@ function renderPeople(){
  const el=peopleList;el.innerHTML="";
  activeRoster().forEach(p=>{const s=personStatus(p.id),d=document.createElement("div");d.className="person";
  let detail="";
- if(s.status==="休假")detail=`<div class="detail"><label>假別</label><select class="leaveType">${LEAVE_TYPES.map(x=>`<option ${s.leaveType===x?"selected":""}>${x}</option>`).join("")}</select><div class="otherLeave ${s.leaveType==="其他"?"":"hidden"}"><label>其他假別</label><input class="leaveOther" value="${escapeHtml(s.leaveOther||"")}"></div></div>`;
+ if(s.status==="在營")detail=`<div class="detail"><label>特殊勤務（選填）</label><select class="specialDuty"><option value="">無</option><option value="訓測值日官" ${s.specialDuty==="訓測值日官"?"selected":""}>訓測值日官</option><option value="其他" ${s.specialDuty==="其他"?"selected":""}>其他</option></select><div class="specialOtherWrap ${s.specialDuty==="其他"?"":"hidden"}"><label>特殊勤務名稱</label><input class="specialOther" placeholder="例如：戰情值日官、留守主官" value="${escapeHtml(s.specialOther||"")}"></div></div>`;
+ else if(s.status==="休假")detail=`<div class="detail"><label>假別</label><select class="leaveType">${LEAVE_TYPES.map(x=>`<option ${s.leaveType===x?"selected":""}>${x}</option>`).join("")}</select><div class="otherLeave ${s.leaveType==="其他"?"":"hidden"}"><label>其他假別</label><input class="leaveOther" value="${escapeHtml(s.leaveOther||"")}"></div></div>`;
  else if(s.status==="公勤")detail=`<div class="detail"><label>公勤事由</label><input class="dutyReason" placeholder="輸入公勤事由" value="${escapeHtml(s.dutyReason||"")}"></div>`;
  else if(s.status==="其他")detail=`<div class="detail"><label>原因</label><input class="otherReason" value="${escapeHtml(s.otherReason||"")}"></div>`;
  d.innerHTML=`<div class="person-top"><div class="person-main"><div class="person-name">${escapeHtml(p.rank)} ${escapeHtml(p.name)}</div><div class="person-role">${escapeHtml(p.role||"")}</div></div></div><label>今日狀況</label><select class="statusSel"><option>在營</option><option>休假</option><option>公勤</option><option>住院</option><option>其他</option></select>${detail}`;
  d.querySelector(".statusSel").value=s.status;d.querySelector(".statusSel").onchange=e=>setPersonStatus(p.id,{status:e.target.value});
+ if(d.querySelector(".specialDuty"))d.querySelector(".specialDuty").onchange=e=>setPersonStatus(p.id,{specialDuty:e.target.value});
+ if(d.querySelector(".specialOther"))d.querySelector(".specialOther").oninput=e=>{state().people[p.id]={...personStatus(p.id),specialOther:e.target.value};save()};
  if(d.querySelector(".leaveType"))d.querySelector(".leaveType").onchange=e=>setPersonStatus(p.id,{leaveType:e.target.value});
  if(d.querySelector(".leaveOther"))d.querySelector(".leaveOther").oninput=e=>{state().people[p.id]={...personStatus(p.id),leaveOther:e.target.value};save()};
  if(d.querySelector(".dutyReason"))d.querySelector(".dutyReason").oninput=e=>{state().people[p.id]={...personStatus(p.id),dutyReason:e.target.value};save()};
@@ -148,12 +151,13 @@ function renderPeople(){
 }
 function renderSummary(){let leave=0,duty=0,other=0;activeRoster().forEach(p=>{const s=personStatus(p.id);if(s.status==="休假")leave++;else if(s.status==="公勤")duty++;else if(s.status!=="在營")other++});const due=activeRoster().length;sumDue.textContent=due;sumPresent.textContent=due-leave-duty-other;sumLeave.textContent=leave;sumDuty.textContent=duty}
 function makeReport(){
- const roster=activeRoster();let leave=[],duty=[],other=[];roster.forEach(p=>{const s=personStatus(p.id),label=`${p.rank}${p.name}`;if(s.status==="休假")leave.push(`${label}－${s.leaveType==="其他"?(s.leaveOther||"其他假別"):s.leaveType}`);else if(s.status==="公勤")duty.push(`${label}－${s.dutyReason||"公勤"}`);else if(s.status!=="在營")other.push(`${label}－${s.status}${s.otherReason?`（${s.otherReason}）`:""}`)});
+ const roster=activeRoster();let leave=[],duty=[],other=[],special=[];roster.forEach(p=>{const s=personStatus(p.id),label=`${p.rank}${p.name}`;if(s.status==="休假")leave.push(`${label}－${s.leaveType==="其他"?(s.leaveOther||"其他假別"):s.leaveType}`);else if(s.status==="公勤")duty.push(`${label}－${s.dutyReason||"公勤"}`);else if(s.status!=="在營")other.push(`${label}－${s.status}${s.otherReason?`（${s.otherReason}）`:""}`);else if(s.specialDuty){special.push(`${s.specialDuty==="其他"?(s.specialOther||"特殊勤務"):s.specialDuty}：${label}`)}});
  const due=roster.length,present=due-leave.length-duty.length-other.length,inc=state().incident;
  let parts=[`報告處長，本處今日應到${due}員，實到${present}員。`];
  if(leave.length)parts.push(`休假${leave.length}員：${leave.join("、")}。`);
  if(duty.length)parts.push(`公勤${duty.length}員：${duty.join("、")}。`);
  if(other.length)parts.push(`其他未在營${other.length}員：${other.join("、")}。`);
+ if(special.length)parts.push(`${special.join("；")}。`);
  parts.push(inc.type==="無事故"?"其餘人員均安，無事故，報告完畢。":`另有事故：${inc.note||"詳情另報"}，報告完畢。`);
  reportText.value=parts.join("");
 }
