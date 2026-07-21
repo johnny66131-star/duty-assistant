@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#17375e">
-<title>值日生小幫手 V2.1.3</title>
+<title>值日生小幫手 V2.1.4</title>
 <link rel="manifest" href="manifest.webmanifest">
 <style>
 :root{--bg:#f4f6f8;--card:#fff;--ink:#16202b;--muted:#697586;--accent:#17375e;--line:#dfe5ec;--ok:#237a57;--warn:#a86100;--danger:#b42318;--soft:#eef3f8}
@@ -31,7 +31,7 @@ nav button{border:0;background:#fff;padding:10px 2px;font-size:11px;color:var(--
 </style>
 </head>
 <body>
-<header><h1>值日生小幫手 V2.1.3</h1><div class="sub">週值日｜名冊連動｜詳細 LINE 回報｜協調會彈性時間</div></header>
+<header><h1>值日生小幫手 V2.1.4</h1><div class="sub">週值日｜名冊連動｜詳細 LINE 回報｜協調會彈性時間</div></header>
 <main>
 <section id="today" class="page active">
   <div class="card"><h2>今日勤務</h2><div id="dutyInfo" class="status"></div><div class="progress"><i id="bar"></i></div></div>
@@ -98,8 +98,8 @@ const TASKS=[
 ];
 const REMINDER_DEFS=[
  {id:"todaySheet",name:"當日工作管制表",time:"07:50",lead:10},
- {id:"peopleReport",name:"人數／事故回報",time:"08:10",lead:5},
- {id:"brief",name:"處報集合",time:"08:20",lead:5},
+ {id:"peopleReport",name:"人數／事故回報",time:"07:50",lead:5},
+ {id:"brief",name:"處報集合",time:"08:00",lead:5},
  {id:"trash",name:"一般垃圾清運",time:"15:00",lead:10},
  {id:"tomorrowSheet",name:"隔日工作管制表",time:"15:30",lead:15,dynamic:true}
 ];
