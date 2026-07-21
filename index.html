@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#17375e">
-<title>值日生小幫手 V2.1</title>
+<title>值日生小幫手 V2.1.2</title>
 <link rel="manifest" href="manifest.webmanifest">
 <style>
 :root{--bg:#f4f6f8;--card:#fff;--ink:#16202b;--muted:#697586;--accent:#17375e;--line:#dfe5ec;--ok:#237a57;--warn:#a86100;--danger:#b42318;--soft:#eef3f8}
@@ -31,7 +31,7 @@ nav button{border:0;background:#fff;padding:10px 2px;font-size:11px;color:var(--
 </style>
 </head>
 <body>
-<header><h1>值日生小幫手 V2.1</h1><div class="sub">週值日｜名冊連動｜詳細 LINE 回報｜協調會彈性時間</div></header>
+<header><h1>值日生小幫手 V2.1.2</h1><div class="sub">週值日｜名冊連動｜詳細 LINE 回報｜協調會彈性時間</div></header>
 <main>
 <section id="today" class="page active">
   <div class="card"><h2>今日勤務</h2><div id="dutyInfo" class="status"></div><div class="progress"><i id="bar"></i></div></div>
@@ -140,9 +140,9 @@ function renderPeople(){
  d.innerHTML=`<div class="person-top"><div class="person-main"><div class="person-name">${escapeHtml(p.rank)} ${escapeHtml(p.name)}</div><div class="person-role">${escapeHtml(p.role||"")}</div></div></div><label>今日狀況</label><select class="statusSel"><option>在營</option><option>休假</option><option>公勤</option><option>住院</option><option>其他</option></select>${detail}`;
  d.querySelector(".statusSel").value=s.status;d.querySelector(".statusSel").onchange=e=>setPersonStatus(p.id,{status:e.target.value});
  if(d.querySelector(".leaveType"))d.querySelector(".leaveType").onchange=e=>setPersonStatus(p.id,{leaveType:e.target.value});
- if(d.querySelector(".leaveOther"))d.querySelector(".leaveOther").oninput=e=>setPersonStatus(p.id,{leaveOther:e.target.value});
- if(d.querySelector(".dutyReason"))d.querySelector(".dutyReason").oninput=e=>setPersonStatus(p.id,{dutyReason:e.target.value});
- if(d.querySelector(".otherReason"))d.querySelector(".otherReason").oninput=e=>setPersonStatus(p.id,{otherReason:e.target.value});
+ if(d.querySelector(".leaveOther"))d.querySelector(".leaveOther").oninput=e=>{state().people[p.id]={...personStatus(p.id),leaveOther:e.target.value};save()};
+ if(d.querySelector(".dutyReason"))d.querySelector(".dutyReason").oninput=e=>{state().people[p.id]={...personStatus(p.id),dutyReason:e.target.value};save()};
+ if(d.querySelector(".otherReason"))d.querySelector(".otherReason").oninput=e=>{state().people[p.id]={...personStatus(p.id),otherReason:e.target.value};save()};
  el.appendChild(d)});
  renderSummary();
 }
