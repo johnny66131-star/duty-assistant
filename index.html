@@ -4,349 +4,197 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#17375e">
-<title>值日生小幫手 V2</title>
+<title>值日生小幫手 V2.1</title>
 <link rel="manifest" href="manifest.webmanifest">
 <style>
-:root{
-  --bg:#f4f6f8;--card:#fff;--ink:#16202b;--muted:#697586;--accent:#17375e;
-  --line:#dfe5ec;--ok:#237a57;--warn:#a86100;--danger:#b42318;--soft:#eef3f8;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif}
+:root{--bg:#f4f6f8;--card:#fff;--ink:#16202b;--muted:#697586;--accent:#17375e;--line:#dfe5ec;--ok:#237a57;--warn:#a86100;--danger:#b42318;--soft:#eef3f8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif}
 header{background:var(--accent);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 18px 14px;position:sticky;top:0;z-index:10}
 header h1{margin:0;font-size:21px}.sub{font-size:13px;opacity:.85;margin-top:4px}
 main{padding:14px 14px calc(94px + env(safe-area-inset-bottom));max-width:760px;margin:auto}
 .card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px rgba(20,40,70,.06)}
-h2{font-size:17px;margin:0 0 12px}h3{font-size:15px;margin:14px 0 8px}
-label{display:block;font-size:13px;color:var(--muted);margin:10px 0 5px}
-input,select,textarea,button{font:inherit}
-input,select,textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;background:#fff;font-size:16px}
-textarea{min-height:90px;resize:vertical}
-button{cursor:pointer}
-.btn{border:0;border-radius:12px;padding:12px 14px;font-weight:700;background:var(--accent);color:#fff;width:100%;margin-top:10px}
-.btn.secondary{background:#e9eef4;color:var(--accent)}.btn.ok{background:var(--ok)}.btn.danger{background:var(--danger)}
-.btn.inline{width:auto;margin:0;padding:9px 12px;font-size:14px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#eef2f6;font-size:12px;margin-right:5px}
-.notice{padding:12px;border-radius:12px;background:var(--soft);font-size:14px;line-height:1.5}
-.status{font-size:13px;color:var(--muted);line-height:1.5}
-.task{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}
-.task input[type=checkbox]{width:24px;height:24px;margin:1px 0 0}.task b{display:block}.task small{color:var(--muted)}
-.progress{height:9px;background:#e5e9ee;border-radius:99px;overflow:hidden;margin-top:8px}.progress i{display:block;height:100%;background:var(--ok);width:0}
+h2{font-size:17px;margin:0 0 12px}label{display:block;font-size:13px;color:var(--muted);margin:10px 0 5px}
+input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;background:#fff;font-size:16px}
+textarea{min-height:92px;resize:vertical}.btn{border:0;border-radius:12px;padding:12px 14px;font-weight:700;background:var(--accent);color:#fff;width:100%;margin-top:10px}
+.btn.secondary{background:#e9eef4;color:var(--accent)}.btn.ok{background:var(--ok)}.btn.danger{background:var(--danger)}.btn.inline{width:auto;margin:0;padding:8px 10px;font-size:13px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.notice{padding:12px;border-radius:12px;background:var(--soft);font-size:14px;line-height:1.5}.status{font-size:13px;color:var(--muted);line-height:1.5}
 .page{display:none}.page.active{display:block}
 nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:env(safe-area-inset-bottom);z-index:20}
 nav button{border:0;background:#fff;padding:10px 2px;font-size:11px;color:var(--muted)}nav button.active{color:var(--accent);font-weight:800}
-.person{border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0;background:#fff}
-.person-top{display:flex;gap:10px;align-items:center}.person-main{flex:1}.person-name{font-weight:800}.person-role{font-size:12px;color:var(--muted);margin-top:2px}
-.person-status{font-size:12px;padding:5px 8px;border-radius:999px;background:#eef2f6}
-.detail{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.task{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}.task input{width:24px;height:24px}.task b{display:block}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#eef2f6;font-size:12px;margin:4px 5px 0 0}
+.progress{height:9px;background:#e5e9ee;border-radius:99px;overflow:hidden;margin-top:8px}.progress i{display:block;height:100%;background:var(--ok);width:0}
 .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.stat{background:#f7f9fb;border-radius:12px;padding:10px;text-align:center}.stat b{display:block;font-size:20px}.stat span{font-size:12px;color:var(--muted)}
-.roster-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.roster-row:last-child{border:0}
-.roster-name b{display:block}.roster-name small{color:var(--muted)}
-.iconbtn{border:0;border-radius:10px;padding:8px 10px;background:#edf2f7;color:var(--accent)}
-.reminder{border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0}.reminder-head{display:flex;align-items:center;gap:9px}.reminder-head input{width:22px;height:22px}.reminder-head b{flex:1}
-.hidden{display:none!important}
-.mini{font-size:12px;color:var(--muted)}
-hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+.person{border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0}.person-top{display:flex;gap:10px;align-items:center}.person-main{flex:1}.person-name{font-weight:800}.person-role{font-size:12px;color:var(--muted)}.detail{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.roster-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.roster-row:last-child{border:0}.roster-actions{display:flex;gap:6px}.mini{font-size:12px;color:var(--muted)}.hidden{display:none!important}
+.reminder{border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0}.reminder-head{display:flex;gap:8px;align-items:center}.reminder-head input{width:22px;height:22px}.reminder-head b{flex:1}
 </style>
 </head>
 <body>
-<header>
-  <h1>值日生小幫手 V2</h1>
-  <div class="sub" id="headerSub">每週值日｜每日勤務｜人員回報｜提醒</div>
-</header>
-
+<header><h1>值日生小幫手 V2.1</h1><div class="sub">週值日｜名冊連動｜詳細 LINE 回報｜協調會彈性時間</div></header>
 <main>
 <section id="today" class="page active">
-  <div class="card">
-    <h2>今日勤務</h2>
-    <div id="dutyInfo" class="status"></div>
-    <div class="progress"><i id="bar"></i></div>
+  <div class="card"><h2>今日勤務</h2><div id="dutyInfo" class="status"></div><div class="progress"><i id="bar"></i></div></div>
+  <div class="card"><h2>參謀工作協調會</h2>
+    <label>今日協調會</label><select id="meetingMode"><option value="normal">今日有協調會</option><option value="none">今日無協調會</option></select>
+    <div id="meetingTimeWrap"><label>協調會時間</label><input id="meetingTime" type="time" value="15:30"></div>
+    <div id="fallbackWrap" class="hidden"><label>隔日工作管制表最晚完成時間</label><input id="fallbackTime" type="time" value="15:30"></div>
+    <div class="notice" style="margin-top:10px">隔日工作管制表的提醒會依「今日協調會時間」或「最晚完成時間」自動連動，不再把 15:30 視為固定制度。</div>
   </div>
-  <div class="card">
-    <h2>任務清單</h2>
-    <div id="tasks"></div>
-  </div>
+  <div class="card"><h2>任務清單</h2><div id="tasks"></div></div>
 </section>
 
 <section id="people" class="page">
-  <div class="card">
-    <h2>今日人員狀況</h2>
-    <div class="summary">
-      <div class="stat"><b id="sumDue">0</b><span>應到</span></div>
-      <div class="stat"><b id="sumPresent">0</b><span>實到</span></div>
-      <div class="stat"><b id="sumLeave">0</b><span>休假</span></div>
-      <div class="stat"><b id="sumDuty">0</b><span>公勤</span></div>
-    </div>
-    <div class="notice" style="margin-top:12px">所有在職且納入統計的人員每日預設「在營」。只需要修改未在營人員即可。</div>
-  </div>
-  <div class="card">
-    <h2>人員名單</h2>
-    <div id="peopleList"></div>
-  </div>
-  <div class="card">
-    <h2>事故狀況</h2>
-    <select id="incidentType">
-      <option value="無事故">無事故</option>
-      <option value="有事故">有事故</option>
-    </select>
-    <div id="incidentWrap" class="hidden">
-      <label>事故摘要</label>
-      <textarea id="incidentNote" placeholder="輸入事故摘要"></textarea>
-    </div>
-    <button class="btn" id="makeReportBtn">產生人數回報</button>
-    <label>回報文字</label>
+  <div class="card"><h2>今日人員狀況</h2><div class="summary">
+    <div class="stat"><b id="sumDue">0</b><span>應到</span></div><div class="stat"><b id="sumPresent">0</b><span>實到</span></div><div class="stat"><b id="sumLeave">0</b><span>休假</span></div><div class="stat"><b id="sumDuty">0</b><span>公勤</span></div>
+  </div><div class="notice" style="margin-top:12px">所有啟用且納入統計人員每日預設在營，只需修改未在營人員。</div></div>
+  <div class="card"><h2>人員名單</h2><div id="peopleList"></div></div>
+  <div class="card"><h2>LINE 回報</h2>
+    <label>事故狀況</label><select id="incidentType"><option value="無事故">無事故</option><option value="有事故">有事故</option></select>
+    <div id="incidentWrap" class="hidden"><label>事故摘要</label><textarea id="incidentNote"></textarea></div>
+    <button class="btn" id="makeReportBtn">產生詳細 LINE 回報</button>
     <textarea id="reportText" readonly></textarea>
-    <button class="btn secondary" id="copyReportBtn">複製回報</button>
+    <button class="btn secondary" id="copyReportBtn">複製 LINE 回報</button>
   </div>
 </section>
 
 <section id="reminders" class="page">
-  <div class="card">
-    <h2>🔔 勤務提醒設定</h2>
-    <div class="notice">各值日生可自行設定提醒時間。一般垃圾預設 15:00；隔日工作管制表預設 15:30 前完成。</div>
-    <div id="reminderList"></div>
-    <button class="btn ok" id="enableNotifyBtn">啟用勤務通知</button>
-    <button class="btn secondary" id="testNotifyBtn">測試通知</button>
-    <div id="notifyStatus" class="status" style="margin-top:10px"></div>
-  </div>
+  <div class="card"><h2>🔔 勤務提醒設定</h2><div id="reminderList"></div><button class="btn ok" id="enableNotifyBtn">啟用勤務通知</button><button class="btn secondary" id="testNotifyBtn">測試通知</button><div id="notifyStatus" class="status" style="margin-top:10px"></div></div>
 </section>
 
 <section id="handover" class="page">
-  <div class="card">
-    <h2>交接事項</h2>
-    <label>未結事項／下週注意事項</label>
-    <textarea id="handoverText" placeholder="例如：週一0900會議、某公文尚待送達、資源回收接近滿等"></textarea>
-    <button class="btn" id="saveHandoverBtn">儲存交接事項</button>
-  </div>
+  <div class="card"><h2>交接事項</h2><textarea id="handoverText" placeholder="輸入未結事項、下週注意事項"></textarea><button class="btn" id="saveHandoverBtn">儲存交接事項</button></div>
 </section>
 
 <section id="settings" class="page">
-  <div class="card">
-    <h2>本週值日設定</h2>
-    <label>值日生</label>
-    <input id="dutyName" placeholder="例：黃○○上尉">
-    <label>本週開始日</label>
-    <input id="weekStart" type="date">
-    <button class="btn" id="saveDutyBtn">儲存設定</button>
-  </div>
-
-  <div class="card">
-    <h2>人員名冊管理</h2>
-    <div class="notice">人員調職時建議改為「停用」，不要直接刪除，以免歷史紀錄失真。</div>
-    <div id="rosterList"></div>
-    <button class="btn" id="addPersonBtn">＋ 新增人員</button>
-  </div>
-
-  <div class="card">
-    <h2>名冊匯入／匯出</h2>
-    <button class="btn secondary" id="exportRosterBtn">匯出名冊 JSON</button>
-    <label>匯入名冊 JSON</label>
-    <input id="importRosterInput" type="file" accept="application/json,.json">
-  </div>
+  <div class="card"><h2>本週值日設定</h2><label>值日生</label><select id="dutyPersonSelect"></select><label>本週開始日</label><input id="weekStart" type="date"><button class="btn" id="saveDutyBtn">儲存設定</button></div>
+  <div class="card"><h2>人員名冊管理</h2><div class="notice">名冊會依階級由高至低自動排序。調職建議使用「停用」；新增錯誤或重複資料可直接「刪除」。</div><div id="rosterList"></div><button class="btn" id="addPersonBtn">＋ 新增人員</button></div>
+  <div class="card"><h2>名冊匯入／匯出</h2><button class="btn secondary" id="exportRosterBtn">匯出名冊 JSON</button><label>匯入名冊 JSON</label><input id="importRosterInput" type="file" accept="application/json,.json"></div>
 </section>
 </main>
 
 <nav>
-  <button class="active" data-page="today">✓<br>今日勤務</button>
-  <button data-page="people">👥<br>人員回報</button>
-  <button data-page="reminders">🔔<br>提醒</button>
-  <button data-page="handover">⇄<br>交接</button>
-  <button data-page="settings">⚙<br>設定</button>
+<button class="active" data-page="today">✓<br>今日勤務</button><button data-page="people">👥<br>人員回報</button><button data-page="reminders">🔔<br>提醒</button><button data-page="handover">⇄<br>交接</button><button data-page="settings">⚙<br>設定</button>
 </nav>
 
 <script>
-const STORAGE_KEY="dutyAssistantV2";
+const KEY="dutyAssistantV21";
+const RANK_WEIGHT={
+ "上將":100,"二級上將":99,"一級上將":100,"中將":95,"少將":90,
+ "上校":80,"中校":75,"少校":70,"上尉":65,"中尉":60,"少尉":55,
+ "一等士官長":50,"二等士官長":49,"三等士官長":48,"士官長":47,
+ "上士":40,"中士":35,"下士":30,"上兵":20,"一兵":15,"二兵":10
+};
+const LEAVE_TYPES=["慰假","補假","事假","公假","喪假","病假","婚假","產假／陪產假","其他"];
 const TASKS=[
-  {id:"todaySheet",name:"印當日工作管制表給處長"},
-  {id:"peopleReport",name:"統計處內人數、事故並完成 LINE／處長回報"},
-  {id:"brief",name:"集合參謀至休閒室開處報"},
-  {id:"docs",name:"送上呈公文至參謀主任辦公室、主計處及督察室"},
-  {id:"recycle",name:"檢視資源回收是否過滿，必要時打包至回收場"},
-  {id:"trash",name:"倒一般垃圾",fixed:"15:00"},
-  {id:"tomorrowSheet",name:"印隔日工作管制表給處長",deadline:"15:30 前"},
-  {id:"other",name:"其他事項"}
+ {id:"todaySheet",name:"印當日工作管制表給處長"},
+ {id:"peopleReport",name:"統計處內人數、事故並完成 LINE／處長回報"},
+ {id:"brief",name:"集合參謀至休閒室開處報"},
+ {id:"docs",name:"送上呈公文至參謀主任辦公室、主計處及督察室"},
+ {id:"recycle",name:"檢視資源回收是否過滿，必要時打包至回收場"},
+ {id:"trash",name:"倒一般垃圾",fixed:"15:00"},
+ {id:"tomorrowSheet",name:"印隔日工作管制表給處長",dynamic:true},
+ {id:"other",name:"其他事項"}
 ];
 const REMINDER_DEFS=[
-  {id:"todaySheet",name:"當日工作管制表",time:"07:50",lead:10},
-  {id:"peopleReport",name:"人數／事故回報",time:"08:10",lead:5},
-  {id:"brief",name:"處報集合",time:"08:20",lead:5},
-  {id:"trash",name:"一般垃圾清運",time:"15:00",lead:10},
-  {id:"tomorrowSheet",name:"隔日工作管制表",time:"15:30",lead:15}
+ {id:"todaySheet",name:"當日工作管制表",time:"07:50",lead:10},
+ {id:"peopleReport",name:"人數／事故回報",time:"08:10",lead:5},
+ {id:"brief",name:"處報集合",time:"08:20",lead:5},
+ {id:"trash",name:"一般垃圾清運",time:"15:00",lead:10},
+ {id:"tomorrowSheet",name:"隔日工作管制表",time:"15:30",lead:15,dynamic:true}
 ];
-const LEAVE_TYPES=["慰假","補假","事假","公假","喪假","病假","婚假","產假／陪產假","其他"];
-
-let data=JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");
-data.settings=data.settings||{};
-data.roster=data.roster||[];
-data.days=data.days||{};
-data.reminders=data.reminders||{};
-data.handover=data.handover||"";
-
-function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}
-function localDateKey(d=new Date()){
-  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");
-  return `${y}-${m}-${day}`;
-}
-function todayState(){
-  const k=localDateKey();
-  data.days[k]=data.days[k]||{tasks:{},people:{},incident:{type:"無事故",note:""}};
-  data.days[k].tasks=data.days[k].tasks||{};
-  data.days[k].people=data.days[k].people||{};
-  data.days[k].incident=data.days[k].incident||{type:"無事故",note:""};
-  return data.days[k];
-}
-function activeRoster(){return data.roster.filter(p=>p.active!==false && p.includeInCount!==false)}
-function personStatus(personId){
-  const st=todayState().people[personId];
-  return st||{status:"在營",leaveType:"",leaveOther:"",dutyReason:"",otherReason:"",start:localDateKey(),end:localDateKey()};
-}
-function setPersonStatus(personId,patch){
-  const cur=personStatus(personId);
-  todayState().people[personId]={...cur,...patch};
-  save();
-  renderPeople();
+let data=JSON.parse(localStorage.getItem(KEY)||"{}");data.settings=data.settings||{};data.roster=data.roster||[];data.days=data.days||{};data.reminders=data.reminders||{};data.handover=data.handover||"";
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function dateKey(d=new Date()){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+function state(){const k=dateKey();data.days[k]=data.days[k]||{tasks:{},people:{},incident:{type:"無事故",note:""},meeting:{mode:"normal",time:"15:30",fallback:"15:30"}};return data.days[k]}
+function sortedRoster(includeInactive=true){return [...data.roster].filter(p=>includeInactive||p.active!==false).sort((a,b)=>(RANK_WEIGHT[b.rank]||0)-(RANK_WEIGHT[a.rank]||0)||(a.seq||0)-(b.seq||0))}
+function activeRoster(){return sortedRoster(false).filter(p=>p.includeInCount!==false)}
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function personStatus(id){return state().people[id]||{status:"在營",leaveType:"慰假",leaveOther:"",dutyReason:"",otherReason:""}}
+function setPersonStatus(id,patch){state().people[id]={...personStatus(id),...patch};save();renderPeople()}
+function renderDutySelect(){
+ const sel=dutyPersonSelect,current=data.settings.dutyPersonId||"";sel.innerHTML='<option value="">請選擇值日生</option>';
+ sortedRoster(false).forEach(p=>{const o=document.createElement("option");o.value=p.id;o.textContent=`${p.rank} ${p.name}${p.role?`｜${p.role}`:""}`;sel.appendChild(o)});sel.value=current;
 }
 function renderTasks(){
-  const s=todayState().tasks,el=document.getElementById("tasks");el.innerHTML="";
-  TASKS.forEach(t=>{
-    const d=document.createElement("div");d.className="task";
-    d.innerHTML=`<input type="checkbox" ${s[t.id]?"checked":""}><div><b>${t.name}</b>${t.fixed?`<span class="badge">固定 ${t.fixed}</span>`:""}${t.deadline?`<span class="badge">${t.deadline}</span>`:""}</div>`;
-    d.querySelector("input").onchange=e=>{s[t.id]=e.target.checked;save();renderProgress()};
-    el.appendChild(d);
-  });
-  renderProgress();
+ const s=state().tasks,el=tasks;el.innerHTML="";
+ TASKS.forEach(t=>{const d=document.createElement("div");d.className="task";
+ let extra=t.fixed?`<span class="badge">固定 ${t.fixed}</span>`:"";
+ if(t.dynamic){const m=state().meeting;extra=`<span class="badge">${m.mode==="normal"?`協調會 ${m.time} 前完成`:`最晚 ${m.fallback} 前完成`}</span>`}
+ d.innerHTML=`<input type="checkbox" ${s[t.id]?"checked":""}><div><b>${t.name}</b>${extra}</div>`;
+ d.querySelector("input").onchange=e=>{s[t.id]=e.target.checked;save();renderProgress()};el.appendChild(d)});
+ renderProgress();
 }
-function renderProgress(){
-  const s=todayState().tasks,done=TASKS.filter(t=>s[t.id]).length;
-  document.getElementById("bar").style.width=(done/TASKS.length*100)+"%";
-  document.getElementById("dutyInfo").innerHTML=`本週值日生：<b>${data.settings.name||"尚未設定"}</b><br>今日完成 ${done} / ${TASKS.length} 項`;
+function renderProgress(){const s=state().tasks,done=TASKS.filter(t=>s[t.id]).length;bar.style.width=(done/TASKS.length*100)+"%";const p=data.roster.find(x=>x.id===data.settings.dutyPersonId);dutyInfo.innerHTML=`本週值日生：<b>${p?`${p.rank} ${p.name}`:"尚未設定"}</b><br>今日完成 ${done} / ${TASKS.length} 項`}
+function renderMeeting(){
+ const m=state().meeting;meetingMode.value=m.mode;meetingTime.value=m.time||"15:30";fallbackTime.value=m.fallback||"15:30";
+ meetingTimeWrap.classList.toggle("hidden",m.mode!=="normal");fallbackWrap.classList.toggle("hidden",m.mode!=="none");
 }
 function renderPeople(){
-  const roster=activeRoster(),el=document.getElementById("peopleList");el.innerHTML="";
-  roster.forEach(p=>{
-    const s=personStatus(p.id),d=document.createElement("div");d.className="person";
-    let details="";
-    if(s.status==="休假"){
-      details=`<div class="detail"><label>假別</label><select class="leaveType">${LEAVE_TYPES.map(x=>`<option ${s.leaveType===x?"selected":""}>${x}</option>`).join("")}</select>
-      <div class="leaveOtherWrap ${s.leaveType==="其他"?"":"hidden"}"><label>其他假別</label><input class="leaveOther" value="${escapeHtml(s.leaveOther||"")}"></div>
-      <div class="row"><div><label>開始日</label><input class="start" type="date" value="${s.start||localDateKey()}"></div><div><label>結束日</label><input class="end" type="date" value="${s.end||localDateKey()}"></div></div></div>`;
-    } else if(s.status==="公勤"){
-      details=`<div class="detail"><label>公勤事由</label><input class="dutyReason" placeholder="例如：國防部開會、督導、演習支援" value="${escapeHtml(s.dutyReason||"")}">
-      <div class="row"><div><label>開始日</label><input class="start" type="date" value="${s.start||localDateKey()}"></div><div><label>結束日</label><input class="end" type="date" value="${s.end||localDateKey()}"></div></div></div>`;
-    } else if(s.status==="其他"){
-      details=`<div class="detail"><label>原因</label><input class="otherReason" value="${escapeHtml(s.otherReason||"")}"></div>`;
-    }
-    d.innerHTML=`<div class="person-top"><div class="person-main"><div class="person-name">${escapeHtml(p.rank)} ${escapeHtml(p.name)}</div><div class="person-role">${escapeHtml(p.role||"")}</div></div><span class="person-status">${s.status}</span></div>
-    <label>今日狀況</label>
-    <select class="statusSel"><option>在營</option><option>休假</option><option>公勤</option><option>住院</option><option>其他</option></select>${details}`;
-    d.querySelector(".statusSel").value=s.status;
-    d.querySelector(".statusSel").onchange=e=>setPersonStatus(p.id,{status:e.target.value,leaveType:e.target.value==="休假"?(s.leaveType||"慰假"):""});
-    const leaveType=d.querySelector(".leaveType");
-    if(leaveType) leaveType.onchange=e=>setPersonStatus(p.id,{leaveType:e.target.value});
-    const leaveOther=d.querySelector(".leaveOther"); if(leaveOther) leaveOther.oninput=e=>setPersonStatus(p.id,{leaveOther:e.target.value});
-    const dutyReason=d.querySelector(".dutyReason"); if(dutyReason) dutyReason.oninput=e=>setPersonStatus(p.id,{dutyReason:e.target.value});
-    const otherReason=d.querySelector(".otherReason"); if(otherReason) otherReason.oninput=e=>setPersonStatus(p.id,{otherReason:e.target.value});
-    d.querySelectorAll(".start").forEach(x=>x.onchange=e=>setPersonStatus(p.id,{start:e.target.value}));
-    d.querySelectorAll(".end").forEach(x=>x.onchange=e=>setPersonStatus(p.id,{end:e.target.value}));
-    el.appendChild(d);
-  });
-  renderPeopleSummary();
+ const el=peopleList;el.innerHTML="";
+ activeRoster().forEach(p=>{const s=personStatus(p.id),d=document.createElement("div");d.className="person";
+ let detail="";
+ if(s.status==="休假")detail=`<div class="detail"><label>假別</label><select class="leaveType">${LEAVE_TYPES.map(x=>`<option ${s.leaveType===x?"selected":""}>${x}</option>`).join("")}</select><div class="otherLeave ${s.leaveType==="其他"?"":"hidden"}"><label>其他假別</label><input class="leaveOther" value="${escapeHtml(s.leaveOther||"")}"></div></div>`;
+ else if(s.status==="公勤")detail=`<div class="detail"><label>公勤事由</label><input class="dutyReason" placeholder="輸入公勤事由" value="${escapeHtml(s.dutyReason||"")}"></div>`;
+ else if(s.status==="其他")detail=`<div class="detail"><label>原因</label><input class="otherReason" value="${escapeHtml(s.otherReason||"")}"></div>`;
+ d.innerHTML=`<div class="person-top"><div class="person-main"><div class="person-name">${escapeHtml(p.rank)} ${escapeHtml(p.name)}</div><div class="person-role">${escapeHtml(p.role||"")}</div></div></div><label>今日狀況</label><select class="statusSel"><option>在營</option><option>休假</option><option>公勤</option><option>住院</option><option>其他</option></select>${detail}`;
+ d.querySelector(".statusSel").value=s.status;d.querySelector(".statusSel").onchange=e=>setPersonStatus(p.id,{status:e.target.value});
+ if(d.querySelector(".leaveType"))d.querySelector(".leaveType").onchange=e=>setPersonStatus(p.id,{leaveType:e.target.value});
+ if(d.querySelector(".leaveOther"))d.querySelector(".leaveOther").oninput=e=>setPersonStatus(p.id,{leaveOther:e.target.value});
+ if(d.querySelector(".dutyReason"))d.querySelector(".dutyReason").oninput=e=>setPersonStatus(p.id,{dutyReason:e.target.value});
+ if(d.querySelector(".otherReason"))d.querySelector(".otherReason").oninput=e=>setPersonStatus(p.id,{otherReason:e.target.value});
+ el.appendChild(d)});
+ renderSummary();
 }
-function renderPeopleSummary(){
-  const roster=activeRoster(); let leave=0,duty=0,otherAbsent=0;
-  roster.forEach(p=>{const s=personStatus(p.id);if(s.status==="休假")leave++;else if(s.status==="公勤")duty++;else if(s.status!=="在營")otherAbsent++;});
-  const due=roster.length,present=due-leave-duty-otherAbsent;
-  sumDue.textContent=due;sumPresent.textContent=present;sumLeave.textContent=leave;sumDuty.textContent=duty;
-}
+function renderSummary(){let leave=0,duty=0,other=0;activeRoster().forEach(p=>{const s=personStatus(p.id);if(s.status==="休假")leave++;else if(s.status==="公勤")duty++;else if(s.status!=="在營")other++});const due=activeRoster().length;sumDue.textContent=due;sumPresent.textContent=due-leave-duty-other;sumLeave.textContent=leave;sumDuty.textContent=duty}
 function makeReport(){
-  const roster=activeRoster(); let leave=0,duty=0,otherAbsent=0;
-  roster.forEach(p=>{const s=personStatus(p.id);if(s.status==="休假")leave++;else if(s.status==="公勤")duty++;else if(s.status!=="在營")otherAbsent++;});
-  const due=roster.length,present=due-leave-duty-otherAbsent;
-  const inc=todayState().incident;
-  let tail=inc.type==="無事故"?"人員均安，無事故":(inc.note?`另有事故：${inc.note}`:"另有事故，詳情另報");
-  reportText.value=`報告處長，本處今日應到${due}員，實到${present}員，休假${leave}員、公勤${duty}員，${tail}，報告完畢。`;
+ const roster=activeRoster();let leave=[],duty=[],other=[];roster.forEach(p=>{const s=personStatus(p.id),label=`${p.rank}${p.name}`;if(s.status==="休假")leave.push(`${label}－${s.leaveType==="其他"?(s.leaveOther||"其他假別"):s.leaveType}`);else if(s.status==="公勤")duty.push(`${label}－${s.dutyReason||"公勤"}`);else if(s.status!=="在營")other.push(`${label}－${s.status}${s.otherReason?`（${s.otherReason}）`:""}`)});
+ const due=roster.length,present=due-leave.length-duty.length-other.length,inc=state().incident;
+ let parts=[`報告處長，本處今日應到${due}員，實到${present}員。`];
+ if(leave.length)parts.push(`休假${leave.length}員：${leave.join("、")}。`);
+ if(duty.length)parts.push(`公勤${duty.length}員：${duty.join("、")}。`);
+ if(other.length)parts.push(`其他未在營${other.length}員：${other.join("、")}。`);
+ parts.push(inc.type==="無事故"?"其餘人員均安，無事故，報告完畢。":`另有事故：${inc.note||"詳情另報"}，報告完畢。`);
+ reportText.value=parts.join("");
 }
 function renderRoster(){
-  const el=document.getElementById("rosterList");el.innerHTML="";
-  if(!data.roster.length){el.innerHTML='<div class="status">尚未建立人員名冊。</div>';return}
-  data.roster.forEach((p,i)=>{
-    const d=document.createElement("div");d.className="roster-row";
-    d.innerHTML=`<div class="roster-name"><b>${escapeHtml(p.rank)} ${escapeHtml(p.name)} ${p.active===false?'<span class="badge">停用</span>':''}</b><small>${escapeHtml(p.role||"")}｜${p.includeInCount===false?"不納入":"納入"}每日統計</small></div><button class="iconbtn">編輯</button>`;
-    d.querySelector("button").onclick=()=>editPerson(i);
-    el.appendChild(d);
-  });
+ const el=rosterList;el.innerHTML="";
+ if(!data.roster.length){el.innerHTML='<div class="status">尚未建立名冊。</div>';return}
+ sortedRoster(true).forEach(p=>{const d=document.createElement("div");d.className="roster-row";d.innerHTML=`<div><b>${escapeHtml(p.rank)} ${escapeHtml(p.name)} ${p.active===false?'<span class="badge">停用</span>':''}</b><div class="mini">${escapeHtml(p.role||"")}｜${p.includeInCount===false?"不納入":"納入"}統計</div></div><div class="roster-actions"><button class="btn inline secondary edit">編輯</button><button class="btn inline danger del">刪除</button></div>`;
+ d.querySelector(".edit").onclick=()=>editPerson(p.id);d.querySelector(".del").onclick=()=>deletePerson(p.id);el.appendChild(d)});
 }
-function editPerson(i){
-  const p=data.roster[i]||{id:crypto.randomUUID?.()||String(Date.now()),rank:"",name:"",role:"",includeInCount:true,active:true};
-  const rank=prompt("階級",p.rank); if(rank===null)return;
-  const name=prompt("姓名",p.name); if(name===null)return;
-  const role=prompt("職務",p.role||""); if(role===null)return;
-  const include=confirm("是否納入每日人數統計？\n按「確定」= 納入，按「取消」= 不納入");
-  const active=confirm("目前是否在職／啟用？\n按「確定」= 啟用，按「取消」= 停用");
-  data.roster[i]={...p,rank:rank.trim(),name:name.trim(),role:role.trim(),includeInCount:include,active};
-  save();renderRoster();renderPeople();
+function editPerson(id){
+ let p=data.roster.find(x=>x.id===id);if(!p){p={id:crypto.randomUUID?.()||String(Date.now()),seq:Date.now(),rank:"",name:"",role:"",includeInCount:true,active:true};data.roster.push(p)}
+ const rank=prompt("階級",p.rank);if(rank===null)return;const name=prompt("姓名",p.name);if(name===null)return;const role=prompt("職務",p.role||"");if(role===null)return;
+ p.rank=rank.trim();p.name=name.trim();p.role=role.trim();p.includeInCount=confirm("是否納入每日人數統計？\n確定=納入，取消=不納入");p.active=confirm("目前是否啟用／在職？\n確定=啟用，取消=停用");save();renderRoster();renderPeople();renderDutySelect();renderProgress()
 }
-function addPerson(){
-  const p={id:crypto.randomUUID?.()||String(Date.now()),rank:"",name:"",role:"",includeInCount:true,active:true};
-  data.roster.push(p);editPerson(data.roster.length-1);
+function deletePerson(id){
+ const p=data.roster.find(x=>x.id===id);if(!p)return;
+ if(!confirm(`確定刪除「${p.rank} ${p.name}」？\n僅建議用於新增錯誤或重複資料。正式調職請改用停用。`))return;
+ data.roster=data.roster.filter(x=>x.id!==id);if(data.settings.dutyPersonId===id)data.settings.dutyPersonId="";save();renderRoster();renderPeople();renderDutySelect();renderProgress()
 }
 function renderReminders(){
-  const el=reminderList;el.innerHTML="";
-  REMINDER_DEFS.forEach(r=>{
-    const v=data.reminders[r.id]||{enabled:true,time:r.time,lead:r.lead};data.reminders[r.id]=v;
-    const d=document.createElement("div");d.className="reminder";
-    d.innerHTML=`<div class="reminder-head"><input class="en" type="checkbox" ${v.enabled?"checked":""}><b>${r.name}</b></div><div class="row"><div><label>任務時間</label><input class="tm" type="time" value="${v.time}"></div><div><label>提前提醒</label><select class="ld">${[0,5,10,15,30].map(x=>`<option value="${x}" ${x===v.lead?"selected":""}>${x?x+" 分鐘":"準時"}</option>`).join("")}</select></div></div>`;
-    d.onchange=()=>{v.enabled=d.querySelector(".en").checked;v.time=d.querySelector(".tm").value;v.lead=+d.querySelector(".ld").value;save()};
-    el.appendChild(d);
-  });save();
+ reminderList.innerHTML="";REMINDER_DEFS.forEach(r=>{let v=data.reminders[r.id]||{enabled:true,time:r.time,lead:r.lead};if(r.dynamic){const m=state().meeting;v.time=m.mode==="normal"?m.time:m.fallback}data.reminders[r.id]=v;
+ const d=document.createElement("div");d.className="reminder";d.innerHTML=`<div class="reminder-head"><input class="en" type="checkbox" ${v.enabled?"checked":""}><b>${r.name}</b></div><div class="row"><div><label>任務時間</label><input class="tm" type="time" value="${v.time}" ${r.dynamic?"disabled":""}></div><div><label>提前提醒</label><select class="ld">${[0,5,10,15,30].map(x=>`<option value="${x}" ${x===v.lead?"selected":""}>${x?x+" 分鐘":"準時"}</option>`).join("")}</select></div></div>${r.dynamic?'<div class="mini">時間由「今日協調會」設定自動帶入。</div>':""}`;
+ d.onchange=()=>{v.enabled=d.querySelector(".en").checked;if(!r.dynamic)v.time=d.querySelector(".tm").value;v.lead=+d.querySelector(".ld").value;save()};reminderList.appendChild(d)});save()
 }
-async function enableNotifications(){
-  if(!("Notification" in window)){notifyStatus.textContent="此瀏覽器不支援 Web 通知。";return}
-  const p=await Notification.requestPermission();
-  notifyStatus.textContent=p==="granted"?"通知權限已允許。":"通知尚未獲允許。";
-}
-async function showNotification(title,body){
-  if(Notification.permission!=="granted")return;
-  if(navigator.serviceWorker?.ready){const reg=await navigator.serviceWorker.ready;reg.showNotification(title,{body,icon:"icon.svg",badge:"icon.svg",tag:title})}
-  else new Notification(title,{body});
-}
-function checkReminders(){
-  const now=new Date(); if(now.getDay()===0||now.getDay()===6)return;
-  const mins=now.getHours()*60+now.getMinutes(),stamp=localDateKey();
-  data.fired=data.fired||{};
-  REMINDER_DEFS.forEach(r=>{
-    const v=data.reminders[r.id];if(!v?.enabled||!v.time)return;
-    const [h,m]=v.time.split(":").map(Number),target=h*60+m-v.lead,fireKey=`${stamp}-${r.id}-${v.time}-${v.lead}`;
-    if(mins>=target&&mins<target+2&&!data.fired[fireKey]){showNotification("值日勤務提醒",`${r.name}${v.lead?`將於 ${v.lead} 分鐘後到點`:"時間已到"}。`);data.fired[fireKey]=true;save()}
-  });
-}
-function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
-function exportRoster(){
-  const blob=new Blob([JSON.stringify({version:2,roster:data.roster},null,2)],{type:"application/json"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="duty-assistant-roster.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-}
-function importRoster(file){
-  const fr=new FileReader();fr.onload=()=>{try{const obj=JSON.parse(fr.result);if(!Array.isArray(obj.roster))throw new Error();data.roster=obj.roster;save();renderRoster();renderPeople();alert("名冊匯入完成")}catch{alert("名冊檔案格式不正確")}};fr.readAsText(file);
-}
-
+async function notify(title,body){if(Notification.permission!=="granted")return;if(navigator.serviceWorker?.ready){const r=await navigator.serviceWorker.ready;r.showNotification(title,{body,icon:"icon.svg",badge:"icon.svg",tag:title})}else new Notification(title,{body})}
+async function enableNotify(){if(!("Notification"in window)){notifyStatus.textContent="此瀏覽器不支援 Web 通知。";return}const p=await Notification.requestPermission();notifyStatus.textContent=p==="granted"?"通知權限已允許。":"通知尚未獲允許。"}
+function checkReminders(){const now=new Date();if([0,6].includes(now.getDay()))return;const mins=now.getHours()*60+now.getMinutes(),stamp=dateKey();data.fired=data.fired||{};REMINDER_DEFS.forEach(r=>{const v=data.reminders[r.id];if(!v?.enabled||!v.time)return;const [h,m]=v.time.split(":").map(Number),target=h*60+m-v.lead,key=`${stamp}-${r.id}-${v.time}-${v.lead}`;if(mins>=target&&mins<target+2&&!data.fired[key]){notify("值日勤務提醒",`${r.name}${v.lead?`將於 ${v.lead} 分鐘後到點`:"時間已到"}。`);data.fired[key]=1;save()}})}
+function exportRoster(){const blob=new Blob([JSON.stringify({version:"2.1",roster:data.roster},null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="duty-assistant-roster.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function importRoster(file){const fr=new FileReader();fr.onload=()=>{try{const o=JSON.parse(fr.result);if(!Array.isArray(o.roster))throw 0;data.roster=o.roster;save();renderRoster();renderPeople();renderDutySelect();alert("匯入完成")}catch{alert("名冊格式不正確")}};fr.readAsText(file)}
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("nav button,.page").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.getElementById(b.dataset.page).classList.add("active")});
-incidentType.value=todayState().incident.type;incidentNote.value=todayState().incident.note||"";
-incidentWrap.classList.toggle("hidden",incidentType.value!=="有事故");
-incidentType.onchange=()=>{todayState().incident.type=incidentType.value;incidentWrap.classList.toggle("hidden",incidentType.value!=="有事故");save()};
-incidentNote.oninput=()=>{todayState().incident.note=incidentNote.value;save()};
-makeReportBtn.onclick=makeReport;
-copyReportBtn.onclick=async()=>{if(!reportText.value)makeReport();await navigator.clipboard.writeText(reportText.value);alert("已複製")};
-saveDutyBtn.onclick=()=>{data.settings.name=dutyName.value.trim();data.settings.weekStart=weekStart.value;save();renderProgress();alert("已儲存")};
-dutyName.value=data.settings.name||"";weekStart.value=data.settings.weekStart||"";
+meetingMode.onchange=()=>{state().meeting.mode=meetingMode.value;save();renderMeeting();renderTasks();renderReminders()};
+meetingTime.onchange=()=>{state().meeting.time=meetingTime.value;save();renderTasks();renderReminders()};
+fallbackTime.onchange=()=>{state().meeting.fallback=fallbackTime.value;save();renderTasks();renderReminders()};
+incidentType.value=state().incident.type;incidentNote.value=state().incident.note||"";incidentWrap.classList.toggle("hidden",incidentType.value!=="有事故");
+incidentType.onchange=()=>{state().incident.type=incidentType.value;incidentWrap.classList.toggle("hidden",incidentType.value!=="有事故");save()};incidentNote.oninput=()=>{state().incident.note=incidentNote.value;save()};
+makeReportBtn.onclick=makeReport;copyReportBtn.onclick=async()=>{if(!reportText.value)makeReport();await navigator.clipboard.writeText(reportText.value);alert("已複製")};
+saveDutyBtn.onclick=()=>{data.settings.dutyPersonId=dutyPersonSelect.value;data.settings.weekStart=weekStart.value;save();renderProgress();alert("已儲存")};weekStart.value=data.settings.weekStart||"";
 handoverText.value=data.handover||"";saveHandoverBtn.onclick=()=>{data.handover=handoverText.value;save();alert("已儲存")};
-addPersonBtn.onclick=addPerson;exportRosterBtn.onclick=exportRoster;importRosterInput.onchange=e=>e.target.files[0]&&importRoster(e.target.files[0]);
-enableNotifyBtn.onclick=enableNotifications;testNotifyBtn.onclick=()=>showNotification("值日生小幫手","這是一則勤務提醒測試通知。");
-
-renderTasks();renderPeople();renderRoster();renderReminders();
-setInterval(checkReminders,30000);checkReminders();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js");
+addPersonBtn.onclick=()=>editPerson(null);exportRosterBtn.onclick=exportRoster;importRosterInput.onchange=e=>e.target.files[0]&&importRoster(e.target.files[0]);
+enableNotifyBtn.onclick=enableNotify;testNotifyBtn.onclick=()=>notify("值日生小幫手","這是一則勤務提醒測試通知。");
+renderMeeting();renderTasks();renderPeople();renderRoster();renderDutySelect();renderReminders();setInterval(checkReminders,30000);checkReminders();
+if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js");
 </script>
-</body>
-</html>
+</body></html>
